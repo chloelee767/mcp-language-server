@@ -45,7 +45,7 @@ func (s *mcpServer) registerTools() error {
 		// Extract arguments
 		filePath, err := request.RequireString("filePath")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		// Extract edits array
@@ -107,7 +107,7 @@ func (s *mcpServer) registerTools() error {
 		// Extract arguments
 		symbolName, err := request.RequireString("symbolName")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		coreLogger.Debug("Executing definition for symbol: %s", symbolName)
@@ -131,7 +131,7 @@ func (s *mcpServer) registerTools() error {
 		// Extract arguments
 		symbolName, err := request.RequireString("symbolName")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		coreLogger.Debug("Executing references for symbol: %s", symbolName)
@@ -163,7 +163,7 @@ func (s *mcpServer) registerTools() error {
 		// Extract arguments
 		filePath, err := request.RequireString("filePath")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		contextLines := request.OptInt("contextLines", 5)
@@ -192,7 +192,7 @@ func (s *mcpServer) registerTools() error {
 	// 	// Extract arguments
 	// 	filePath, err := request.RequireString("filePath")
 	// 	if err != nil {
-	// 		return mcp.NewToolResultErrorFromError(err), nil
+	// 		return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 	// 	}
 	//
 	// 	coreLogger.Debug("Executing get_codelens for file: %s", filePath)
@@ -220,12 +220,12 @@ func (s *mcpServer) registerTools() error {
 	// 	// Extract arguments
 	// 	filePath, err := request.RequireString("filePath")
 	// 	if err != nil {
-	// 		return mcp.NewToolResultErrorFromError(err), nil
+	// 		return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 	// 	}
 	//
 	// 	index, err := request.RequireInt("index")
 	// 	if err != nil {
-	// 		return mcp.NewToolResultErrorFromError(err), nil
+	// 		return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 	// 	}
 	//
 	// 	coreLogger.Debug("Executing execute_codelens for file: %s index: %d", filePath, index)
@@ -257,17 +257,17 @@ func (s *mcpServer) registerTools() error {
 		// Extract arguments
 		filePath, err := request.RequireString("filePath")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		line, err := request.RequireInt("line")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		column, err := request.RequireInt("column")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		coreLogger.Debug("Executing hover for file: %s line: %d column: %d", filePath, line, column)
@@ -303,22 +303,22 @@ func (s *mcpServer) registerTools() error {
 		// Extract arguments
 		filePath, err := request.RequireString("filePath")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		newName, err := request.RequireString("newName")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		line, err := request.RequireInt("line")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		column, err := request.RequireInt("column")
 		if err != nil {
-			return mcp.NewToolResultErrorFromError(err), nil
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
 		coreLogger.Debug("Executing rename_symbol for file: %s line: %d column: %d newName: %s", filePath, line, column, newName)

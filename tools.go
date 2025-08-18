@@ -166,8 +166,8 @@ func (s *mcpServer) registerTools() error {
 			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
-		contextLines := request.OptInt("contextLines", 5)
-		showLineNumbers := request.OptBool("showLineNumbers", true)
+		contextLines := request.GetInt("contextLines", 5)
+		showLineNumbers := request.GetBool("showLineNumbers", true)
 
 		coreLogger.Debug("Executing diagnostics for file: %s", filePath)
 		text, err := tools.GetDiagnosticsForFile(s.ctx, s.lspClient, filePath, contextLines, showLineNumbers)

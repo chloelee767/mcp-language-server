@@ -1,0 +1,2 @@
+- help me to change the `reference` tool: we want to change the request format to take in filePath, line, column (like the `hover` tool).
+- don't worry about backwards compatability, make it a breaking change

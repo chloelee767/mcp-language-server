@@ -120,22 +120,40 @@ func (s *mcpServer) registerTools() error {
 	})
 
 	findReferencesTool := mcp.NewTool("references",
-		mcp.WithDescription("Find all usages and references of a symbol throughout the codebase. Returns a list of all files and locations where the symbol appears."),
-		mcp.WithString("symbolName",
+		mcp.WithDescription("Find all usages and references of a symbol at the specified position throughout the codebase. Returns a list of all files and locations where the symbol appears. If necessary, you can use the defintion tool to search for the location given the symbol name."),
+		mcp.WithString("filePath",
 			mcp.Required(),
-			mcp.Description("The name of the symbol to search for (e.g. 'mypackage.MyFunction', 'MyType')"),
+			mcp.Description("The path to the file containing the symbol to find references for"),
+		),
+		mcp.WithNumber("line",
+			mcp.Required(),
+			mcp.Description("The line number where the symbol is located (1-indexed)"),
+		),
+		mcp.WithNumber("column",
+			mcp.Required(),
+			mcp.Description("The column number where the symbol is located (1-indexed)"),
 		),
 	)
 
 	s.mcpServer.AddTool(findReferencesTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		// Extract arguments
-		symbolName, err := request.RequireString("symbolName")
+		filePath, err := request.RequireString("filePath")
 		if err != nil {
 			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
 		}
 
-		coreLogger.Debug("Executing references for symbol: %s", symbolName)
-		text, err := tools.FindReferences(s.ctx, s.lspClient, symbolName)
+		line, err := request.RequireInt("line")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		column, err := request.RequireInt("column")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		coreLogger.Debug("Executing references for file: %s line: %d column: %d", filePath, line, column)
+		text, err := tools.FindReferences(s.ctx, s.lspClient, filePath, line, column)
 		if err != nil {
 			coreLogger.Error("Failed to find references: %v", err)
 			return mcp.NewToolResultError(fmt.Sprintf("failed to find references: %v", err)), nil

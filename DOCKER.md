@@ -12,7 +12,6 @@ This directory contains Docker configurations to run the MCP Language Server int
 - **Dockerfile-rust** - Rust integration tests (includes Rust stable + rust-analyzer)
 - **Dockerfile-typescript** - TypeScript integration tests (includes Node.js 20 + typescript-language-server)
 - **Dockerfile-clangd** - Clangd integration tests (includes clang-16 + clangd-16 + bear)
-- **Dockerfile-all** - All-in-one image with all language servers
 
 ## Quick Start
 
@@ -39,9 +38,6 @@ docker-compose up --build typescript-tests
 
 # Clangd integration tests
 docker-compose up --build clangd-tests
-
-# All integration tests in one container
-docker-compose up --build all-tests
 
 # Unit tests only
 docker-compose up --build unit-tests
@@ -81,26 +77,16 @@ docker build -t mcp-clangd-tests -f Dockerfile-clangd .
 docker run --rm mcp-clangd-tests
 ```
 
-**All Integration Tests:**
-```bash
-docker build -t mcp-all-tests -f Dockerfile-all .
-docker run --rm mcp-all-tests
-```
-
 ## Interactive Development
 
 To run tests interactively or debug issues:
 
 ```bash
-# Start a container with a shell
-docker run -it --rm -v $(pwd):/workspace mcp-all-tests bash
+# Start a container with a shell (use any language-specific image you need)
+docker run -it --rm -v $(pwd):/workspace mcp-go-tests bash
 
 # Inside the container, you can run specific tests:
 go test -v ./integrationtests/tests/go/...
-go test -v ./integrationtests/tests/python/...
-go test -v ./integrationtests/tests/rust/...
-go test -v ./integrationtests/tests/typescript/...
-go test -v ./integrationtests/tests/clangd/...
 
 # Or run a single test
 go test -v -run TestSpecificTest ./integrationtests/tests/go/...
@@ -169,15 +155,11 @@ docker-compose build --no-cache <service-name>
 
 To debug failing tests:
 ```bash
-# Run interactively
-docker run -it --rm -v $(pwd):/workspace mcp-all-tests bash
+# Run interactively (use the appropriate image for your language)
+docker run -it --rm -v $(pwd):/workspace mcp-go-tests bash
 
-# Check language server versions
+# Inside the container, check the language server version
 gopls version
-pyright --version
-rustc --version
-rust-analyzer --version
-clangd --version
 ```
 
 ### Clangd Tests Require compile_commands.json

@@ -61,13 +61,3 @@ services:
     container_name: mcp-clangd-integration-tests
     volumes:
       - .:/workspace
-
-  # All integration tests in one container
-  all-tests:
-    build:
-      context: .
-      dockerfile: Dockerfile-all
-    image: mcp-language-server:all-tests
-    container_name: mcp-all-integration-tests
-    volumes:
-      - .:/workspace

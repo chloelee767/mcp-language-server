@@ -5,7 +5,7 @@ services:
   unit-tests:
     build:
       context: .
-      dockerfile: Dockerfile.base
+      dockerfile: Dockerfile-base
     image: mcp-language-server:unit-tests
     container_name: mcp-unit-tests
     volumes:
@@ -16,7 +16,7 @@ services:
   go-tests:
     build:
       context: .
-      dockerfile: Dockerfile.go
+      dockerfile: Dockerfile-go
     image: mcp-language-server:go-tests
     container_name: mcp-go-integration-tests
     volumes:
@@ -26,7 +26,7 @@ services:
   python-tests:
     build:
       context: .
-      dockerfile: Dockerfile.python
+      dockerfile: Dockerfile-python
     image: mcp-language-server:python-tests
     container_name: mcp-python-integration-tests
     volumes:
@@ -36,7 +36,7 @@ services:
   rust-tests:
     build:
       context: .
-      dockerfile: Dockerfile.rust
+      dockerfile: Dockerfile-rust
     image: mcp-language-server:rust-tests
     container_name: mcp-rust-integration-tests
     volumes:
@@ -46,7 +46,7 @@ services:
   typescript-tests:
     build:
       context: .
-      dockerfile: Dockerfile.typescript
+      dockerfile: Dockerfile-typescript
     image: mcp-language-server:typescript-tests
     container_name: mcp-typescript-integration-tests
     volumes:
@@ -56,7 +56,7 @@ services:
   clangd-tests:
     build:
       context: .
-      dockerfile: Dockerfile.clangd
+      dockerfile: Dockerfile-clangd
     image: mcp-language-server:clangd-tests
     container_name: mcp-clangd-integration-tests
     volumes:
@@ -66,7 +66,7 @@ services:
   all-tests:
     build:
       context: .
-      dockerfile: Dockerfile.all
+      dockerfile: Dockerfile-all
     image: mcp-language-server:all-tests
     container_name: mcp-all-integration-tests
     volumes:

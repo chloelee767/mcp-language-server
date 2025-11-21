@@ -1,0 +1,24 @@
+# Dockerfile for Go Integration Tests
+# Includes gopls language server
+
+FROM golang:1.24-bookworm
+
+WORKDIR /workspace
+
+# Install gopls
+RUN go install golang.org/x/tools/gopls@latest
+
+# Copy go module files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the mcp-language-server binary
+RUN go build -o mcp-language-server
+
+# Run Go integration tests
+CMD ["go", "test", "-v", "./integrationtests/tests/go/..."]

@@ -1,0 +1,34 @@
+# Dockerfile for Python Integration Tests
+# Includes Python 3.10 and pyright language server
+
+FROM golang:1.24-bookworm
+
+WORKDIR /workspace
+
+# Install Node.js (needed for pyright)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
+# Install Python 3.10
+RUN apt-get update && apt-get install -y \
+    python3.10 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pyright
+RUN npm install -g pyright
+
+# Copy go module files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the mcp-language-server binary
+RUN go build -o mcp-language-server
+
+# Run Python integration tests
+CMD ["go", "test", "-v", "./integrationtests/tests/python/..."]

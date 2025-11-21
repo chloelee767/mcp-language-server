@@ -1,0 +1,39 @@
+# Dockerfile for Clangd Integration Tests
+# Includes clang-16, llvm-16, clangd-16, and bear
+
+FROM golang:1.24-bookworm
+
+WORKDIR /workspace
+
+# Install LLVM, Clang, clangd-16, and bear
+RUN apt-get update && apt-get install -y \
+    clang-16 \
+    llvm-16 \
+    clangd-16 \
+    bear \
+    make \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symlink for clangd
+RUN ln -s /usr/bin/clangd-16 /usr/bin/clangd
+
+# Copy go module files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the mcp-language-server binary
+RUN go build -o mcp-language-server
+
+# Verify Clangd installation
+RUN clangd-16 --version && clangd --version
+
+# Generate compile commands for the clangd workspace
+RUN cd integrationtests/workspaces/clangd && bear -- make
+
+# Run Clangd integration tests
+CMD ["sh", "-c", "go test -v ./integrationtests/tests/clangd/definition... && go test -v ./integrationtests/tests/clangd/diagnostics..."]

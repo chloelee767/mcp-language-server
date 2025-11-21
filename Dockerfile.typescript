@@ -1,0 +1,29 @@
+# Dockerfile for TypeScript Integration Tests
+# Includes Node.js 20, TypeScript, and typescript-language-server
+
+FROM golang:1.24-bookworm
+
+WORKDIR /workspace
+
+# Install Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install TypeScript and typescript-language-server
+RUN npm install -g typescript typescript-language-server
+
+# Copy go module files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the mcp-language-server binary
+RUN go build -o mcp-language-server
+
+# Run TypeScript integration tests
+CMD ["go", "test", "-v", "./integrationtests/tests/typescript/..."]

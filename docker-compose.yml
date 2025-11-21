@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # Unit tests (base Go image)
+  unit-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: mcp-language-server:unit-tests
+    container_name: mcp-unit-tests
+    volumes:
+      - .:/workspace
+    command: go test -v ./internal/...
+
+  # Go integration tests
+  go-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.go
+    image: mcp-language-server:go-tests
+    container_name: mcp-go-integration-tests
+    volumes:
+      - .:/workspace
+
+  # Python integration tests
+  python-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    image: mcp-language-server:python-tests
+    container_name: mcp-python-integration-tests
+    volumes:
+      - .:/workspace
+
+  # Rust integration tests
+  rust-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.rust
+    image: mcp-language-server:rust-tests
+    container_name: mcp-rust-integration-tests
+    volumes:
+      - .:/workspace
+
+  # TypeScript integration tests
+  typescript-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.typescript
+    image: mcp-language-server:typescript-tests
+    container_name: mcp-typescript-integration-tests
+    volumes:
+      - .:/workspace
+
+  # Clangd integration tests
+  clangd-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.clangd
+    image: mcp-language-server:clangd-tests
+    container_name: mcp-clangd-integration-tests
+    volumes:
+      - .:/workspace
+
+  # All integration tests in one container
+  all-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.all
+    image: mcp-language-server:all-tests
+    container_name: mcp-all-integration-tests
+    volumes:
+      - .:/workspace

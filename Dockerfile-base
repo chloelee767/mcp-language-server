@@ -4,7 +4,7 @@
 FROM golang:1.24-bookworm
 
 # Set working directory
-WORKDIR /workspace
+WORKDIR /repo
 
 # Install common build tools
 RUN apt-get update && apt-get install -y \

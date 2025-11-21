@@ -3,7 +3,7 @@
 
 FROM golang:1.24-bookworm
 
-WORKDIR /workspace
+WORKDIR /repo
 
 # Install LLVM, Clang, clangd-16, and bear
 RUN apt-get update && apt-get install -y \

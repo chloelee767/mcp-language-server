@@ -9,7 +9,7 @@ services:
     image: mcp-language-server:unit-tests
     container_name: mcp-unit-tests
     volumes:
-      - .:/workspace
+      - .:/repo
     command: go test -v ./internal/...
 
   # Go integration tests
@@ -20,7 +20,7 @@ services:
     image: mcp-language-server:go-tests
     container_name: mcp-go-integration-tests
     volumes:
-      - .:/workspace
+      - .:/repo
 
   # Python integration tests
   python-tests:
@@ -30,7 +30,7 @@ services:
     image: mcp-language-server:python-tests
     container_name: mcp-python-integration-tests
     volumes:
-      - .:/workspace
+      - .:/repo
 
   # Rust integration tests
   rust-tests:
@@ -40,7 +40,7 @@ services:
     image: mcp-language-server:rust-tests
     container_name: mcp-rust-integration-tests
     volumes:
-      - .:/workspace
+      - .:/repo
 
   # TypeScript integration tests
   typescript-tests:
@@ -50,7 +50,7 @@ services:
     image: mcp-language-server:typescript-tests
     container_name: mcp-typescript-integration-tests
     volumes:
-      - .:/workspace
+      - .:/repo
 
   # Clangd integration tests
   clangd-tests:
@@ -60,4 +60,4 @@ services:
     image: mcp-language-server:clangd-tests
     container_name: mcp-clangd-integration-tests
     volumes:
-      - .:/workspace
+      - .:/repo

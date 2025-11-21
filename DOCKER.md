@@ -6,13 +6,13 @@ This directory contains Docker configurations to run the MCP Language Server int
 
 ### Individual Language Test Suites
 
-- **Dockerfile.base** - Base image with Go 1.24 for unit tests
-- **Dockerfile.go** - Go integration tests (includes gopls)
-- **Dockerfile.python** - Python integration tests (includes Python 3.10 + pyright)
-- **Dockerfile.rust** - Rust integration tests (includes Rust stable + rust-analyzer)
-- **Dockerfile.typescript** - TypeScript integration tests (includes Node.js 20 + typescript-language-server)
-- **Dockerfile.clangd** - Clangd integration tests (includes clang-16 + clangd-16 + bear)
-- **Dockerfile.all** - All-in-one image with all language servers
+- **Dockerfile-base** - Base image with Go 1.24 for unit tests
+- **Dockerfile-go** - Go integration tests (includes gopls)
+- **Dockerfile-python** - Python integration tests (includes Python 3.10 + pyright)
+- **Dockerfile-rust** - Rust integration tests (includes Rust stable + rust-analyzer)
+- **Dockerfile-typescript** - TypeScript integration tests (includes Node.js 20 + typescript-language-server)
+- **Dockerfile-clangd** - Clangd integration tests (includes clang-16 + clangd-16 + bear)
+- **Dockerfile-all** - All-in-one image with all language servers
 
 ## Quick Start
 
@@ -53,37 +53,37 @@ docker-compose up --build unit-tests
 
 **Go Integration Tests:**
 ```bash
-docker build -t mcp-go-tests -f Dockerfile.go .
+docker build -t mcp-go-tests -f Dockerfile-go .
 docker run --rm mcp-go-tests
 ```
 
 **Python Integration Tests:**
 ```bash
-docker build -t mcp-python-tests -f Dockerfile.python .
+docker build -t mcp-python-tests -f Dockerfile-python .
 docker run --rm mcp-python-tests
 ```
 
 **Rust Integration Tests:**
 ```bash
-docker build -t mcp-rust-tests -f Dockerfile.rust .
+docker build -t mcp-rust-tests -f Dockerfile-rust .
 docker run --rm mcp-rust-tests
 ```
 
 **TypeScript Integration Tests:**
 ```bash
-docker build -t mcp-typescript-tests -f Dockerfile.typescript .
+docker build -t mcp-typescript-tests -f Dockerfile-typescript .
 docker run --rm mcp-typescript-tests
 ```
 
 **Clangd Integration Tests:**
 ```bash
-docker build -t mcp-clangd-tests -f Dockerfile.clangd .
+docker build -t mcp-clangd-tests -f Dockerfile-clangd .
 docker run --rm mcp-clangd-tests
 ```
 
 **All Integration Tests:**
 ```bash
-docker build -t mcp-all-tests -f Dockerfile.all .
+docker build -t mcp-all-tests -f Dockerfile-all .
 docker run --rm mcp-all-tests
 ```
 

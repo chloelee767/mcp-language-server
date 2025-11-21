@@ -1,0 +1,36 @@
+# Git
+.git
+.gitignore
+.github
+
+# Build artifacts
+mcp-language-server
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binaries and output
+*.test
+*.out
+integrationtests/test-output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (not needed in container)
+*.md
+!DOCKER.md
+
+# Docker files (don't copy into container)
+Dockerfile*
+docker-compose.yml
+.dockerignore

@@ -1,0 +1,33 @@
+# Dockerfile for Rust Integration Tests
+# Includes Rust stable toolchain and rust-analyzer
+
+FROM golang:1.24-bookworm
+
+WORKDIR /workspace
+
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+
+# Add Rust to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install rust-src component and rust-analyzer
+RUN rustup component add rust-src rust-analyzer
+
+# Copy go module files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the mcp-language-server binary
+RUN go build -o mcp-language-server
+
+# Verify Rust installation
+RUN rustc --version && rust-analyzer --version
+
+# Run Rust integration tests
+CMD ["go", "test", "-v", "./integrationtests/tests/rust/..."]

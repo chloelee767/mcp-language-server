@@ -1,0 +1,28 @@
+# Base Dockerfile for MCP Language Server Integration Tests
+# This image contains Go and common dependencies
+
+FROM golang:1.24-bookworm
+
+# Set working directory
+WORKDIR /workspace
+
+# Install common build tools
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy go module files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the mcp-language-server binary
+RUN go build -o mcp-language-server
+
+CMD ["go", "test", "./internal/..."]

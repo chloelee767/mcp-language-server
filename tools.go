@@ -39,6 +39,9 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("Path to the file to edit"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(false),
+		mcp.WithDestructiveHintAnnotation(true), // can perform destructive updates
 	)
 
 	s.mcpServer.AddTool(applyTextEditTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -101,6 +104,8 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("The name of the symbol whose definition you want to find (e.g. 'mypackage.MyFunction', 'MyType.MyMethod')"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(true),
 	)
 
 	s.mcpServer.AddTool(readDefinitionTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -133,6 +138,8 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("The column number where the symbol is located (1-indexed)"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(true),
 	)
 
 	s.mcpServer.AddTool(findReferencesTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -175,6 +182,8 @@ func (s *mcpServer) registerTools() error {
 			mcp.Description("If true, adds line numbers to the output"),
 			mcp.DefaultBool(true),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(true),
 	)
 
 	s.mcpServer.AddTool(getDiagnosticsTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -269,6 +278,8 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("The column number where the hover is requested (1-indexed)"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(true),
 	)
 
 	s.mcpServer.AddTool(hoverTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -311,6 +322,8 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("The column number where the symbol is located (1-indexed)"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(true),
 	)
 
 	s.mcpServer.AddTool(typeDefinitionTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -352,6 +365,8 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("The column number where the symbol is located (1-indexed)"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(true),
 	)
 
 	s.mcpServer.AddTool(implementationTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -397,6 +412,9 @@ func (s *mcpServer) registerTools() error {
 			mcp.Required(),
 			mcp.Description("The new name for the symbol"),
 		),
+		mcp.WithOpenWorldHintAnnotation(false),
+		mcp.WithReadOnlyHintAnnotation(false),
+		mcp.WithDestructiveHintAnnotation(false), // cannot perform destructive updates
 	)
 
 	s.mcpServer.AddTool(renameSymbolTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {

@@ -260,3 +260,28 @@ integrationtests/
 ```
 
 To update snapshots, run `UPDATE_SNAPSHOTS=true go test ./integrationtests/...`
+
+### Docker Testing
+
+Docker configurations are available for running integration tests in isolated environments without installing language servers locally. See [DOCKER.md](DOCKER.md) for detailed documentation.
+
+**Quick start:**
+
+```bash
+# Run all integration tests in Docker
+docker-compose up --build
+
+# Run specific language tests
+docker-compose up --build go-tests
+docker-compose up --build python-tests
+
+# Or use justfile commands
+just docker-test           # Run all tests
+just docker-test-go        # Run Go tests only
+```
+
+This is particularly useful for:
+- Running tests without installing language servers locally
+- Ensuring consistent test environments
+- CI/CD integration
+- Testing on different platforms

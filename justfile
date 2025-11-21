@@ -36,3 +36,40 @@ test:
 # Update snapshot tests
 snapshot:
   UPDATE_SNAPSHOTS=true go test ./integrationtests/...
+
+# Build all Docker images
+docker-build:
+  docker-compose build --parallel
+
+# Run all integration tests in Docker
+docker-test:
+  docker-compose up --build --abort-on-container-exit
+
+# Run Go integration tests in Docker
+docker-test-go:
+  docker-compose up --build go-tests
+
+# Run Python integration tests in Docker
+docker-test-python:
+  docker-compose up --build python-tests
+
+# Run Rust integration tests in Docker
+docker-test-rust:
+  docker-compose up --build rust-tests
+
+# Run TypeScript integration tests in Docker
+docker-test-typescript:
+  docker-compose up --build typescript-tests
+
+# Run Clangd integration tests in Docker
+docker-test-clangd:
+  docker-compose up --build clangd-tests
+
+# Run unit tests in Docker
+docker-test-unit:
+  docker-compose up --build unit-tests
+
+# Clean up Docker resources
+docker-clean:
+  docker-compose down -v
+  docker system prune -f

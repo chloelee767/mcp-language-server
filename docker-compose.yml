@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Unit tests (base Go image)
   unit-tests:

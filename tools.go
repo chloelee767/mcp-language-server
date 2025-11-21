@@ -297,6 +297,88 @@ func (s *mcpServer) registerTools() error {
 		return mcp.NewToolResultText(text), nil
 	})
 
+	typeDefinitionTool := mcp.NewTool("type_definition",
+		mcp.WithDescription("Get the type definition of a symbol at the specified position. Returns the location(s) where the type is defined."),
+		mcp.WithString("filePath",
+			mcp.Required(),
+			mcp.Description("The path to the file containing the symbol"),
+		),
+		mcp.WithNumber("line",
+			mcp.Required(),
+			mcp.Description("The line number where the symbol is located (1-indexed)"),
+		),
+		mcp.WithNumber("column",
+			mcp.Required(),
+			mcp.Description("The column number where the symbol is located (1-indexed)"),
+		),
+	)
+
+	s.mcpServer.AddTool(typeDefinitionTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		filePath, err := request.RequireString("filePath")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		line, err := request.RequireInt("line")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		column, err := request.RequireInt("column")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		coreLogger.Debug("Executing type_definition for file: %s line: %d column: %d", filePath, line, column)
+		text, err := tools.GetTypeDefinition(s.ctx, s.lspClient, filePath, line, column)
+		if err != nil {
+			coreLogger.Error("Failed to get type definition: %v", err)
+			return mcp.NewToolResultError(fmt.Sprintf("failed to get type definition: %v", err)), nil
+		}
+		return mcp.NewToolResultText(text), nil
+	})
+
+	implementationTool := mcp.NewTool("implementation",
+		mcp.WithDescription("Find all implementations of an interface or abstract method at the specified position. Returns the location(s) of concrete implementations."),
+		mcp.WithString("filePath",
+			mcp.Required(),
+			mcp.Description("The path to the file containing the symbol"),
+		),
+		mcp.WithNumber("line",
+			mcp.Required(),
+			mcp.Description("The line number where the symbol is located (1-indexed)"),
+		),
+		mcp.WithNumber("column",
+			mcp.Required(),
+			mcp.Description("The column number where the symbol is located (1-indexed)"),
+		),
+	)
+
+	s.mcpServer.AddTool(implementationTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		filePath, err := request.RequireString("filePath")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		line, err := request.RequireInt("line")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		column, err := request.RequireInt("column")
+		if err != nil {
+			return mcp.NewToolResultErrorFromErr("invalid argument", err), nil
+		}
+
+		coreLogger.Debug("Executing implementation for file: %s line: %d column: %d", filePath, line, column)
+		text, err := tools.GetImplementation(s.ctx, s.lspClient, filePath, line, column)
+		if err != nil {
+			coreLogger.Error("Failed to get implementation: %v", err)
+			return mcp.NewToolResultError(fmt.Sprintf("failed to get implementation: %v", err)), nil
+		}
+		return mcp.NewToolResultText(text), nil
+	})
+
 	renameSymbolTool := mcp.NewTool("rename_symbol",
 		mcp.WithDescription("Rename a symbol (variable, function, class, etc.) at the specified position and update all references throughout the codebase."),
 		mcp.WithString("filePath",

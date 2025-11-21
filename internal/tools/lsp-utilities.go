@@ -181,3 +181,39 @@ func GetLineRangesToDisplay(ctx context.Context, client *lsp.Client, locations [
 
 	return linesToShow, nil
 }
+
+// ExtractLocationsFromDefinitionResult extracts a slice of Location from various Definition union types
+func ExtractLocationsFromDefinitionResult(result any) ([]protocol.Location, error) {
+	var locations []protocol.Location
+
+	switch v := result.(type) {
+	case nil:
+		return nil, nil
+	case protocol.Location:
+		locations = append(locations, v)
+	case []protocol.Location:
+		locations = v
+	case protocol.Or_Definition:
+		switch def := v.Value.(type) {
+		case nil:
+			return nil, nil
+		case protocol.Location:
+			locations = append(locations, def)
+		case []protocol.Location:
+			locations = def
+		default:
+			return nil, fmt.Errorf("unexpected Or_Definition value type: %T", def)
+		}
+	case []protocol.DefinitionLink:
+		for _, link := range v {
+			locations = append(locations, protocol.Location{
+				URI:   link.TargetURI,
+				Range: link.TargetRange,
+			})
+		}
+	default:
+		return nil, fmt.Errorf("unexpected result type: %T", v)
+	}
+
+	return locations, nil
+}

@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -19,6 +20,14 @@ import (
 
 // Create a logger for the core component
 var coreLogger = logging.NewLogger(logging.Core)
+
+const serverInstructions = `
+- This server exposes a language server to enable agents to navigate and edit codebases more easily, by giving access to semantic tools from the LSP server like get definition, references, rename, etc.
+- Semantic tools are generally more accurate than text-based tools like grep or search+replace. However, you may still need to fallback to text-based approaches when the LSP server works poorly, such as: when the code does not compile.
+	- Beware: For reading tools like references, this usually won't manifest as an error from the language server, rather it will appear as zero results or incomplete results.
+- When using references etc tools, the line + column number MUST be inside the function/variable etc name, NOT on keywords (eg. type, struct) or whitespace.
+- If you get this error "no identifier found", it means your column/line number is incorrect. It does NOT mean there are zero references / results etc.
+`
 
 type config struct {
 	workspaceDir string
@@ -113,6 +122,7 @@ func (s *mcpServer) start() error {
 		"v0.0.2",
 		server.WithLogging(),
 		server.WithRecovery(),
+		server.WithInstructions(strings.TrimSpace(serverInstructions)),
 	)
 
 	err := s.registerTools()
